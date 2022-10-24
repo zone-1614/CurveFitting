@@ -19,6 +19,7 @@ set(PROJECT_SOURCES
         widget.cpp
         widget.h
         widget.ui
+        drawwidget.h drawwidget.cpp drawwidget.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

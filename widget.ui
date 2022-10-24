@@ -20,7 +20,7 @@
       <widget class="QGroupBox" name="groupBox">
        <property name="maximumSize">
         <size>
-         <width>250</width>
+         <width>200</width>
          <height>16777215</height>
         </size>
        </property>
@@ -31,7 +31,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QCheckBox" name="olsCheckBox">
+           <widget class="QCheckBox" name="lagrangeCheckBox">
             <property name="text">
              <string>Lagrange Interpolation</string>
             </property>
@@ -44,14 +44,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="gaussCheckBox">
             <property name="text">
              <string>Gauss Basis</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="lagrangeCheckBox">
+           <widget class="QCheckBox" name="olsCheckBox">
             <property name="text">
              <string>Ordinary Least Square </string>
             </property>
@@ -59,7 +59,7 @@
              <bool>false</bool>
             </property>
             <property name="tristate">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -78,6 +78,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="cancelButton">
+            <property name="maximumSize">
+             <size>
+              <width>250</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Cancel</string>
             </property>
@@ -89,23 +95,20 @@
       </widget>
      </item>
      <item>
-      <widget class="QWidget" name="drawWidget" native="true">
-       <widget class="QListView" name="listView">
-        <property name="geometry">
-         <rect>
-          <x>110</x>
-          <y>240</y>
-          <width>256</width>
-          <height>192</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
+      <widget class="DrawWidget" name="drawWidget" native="true"/>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DrawWidget</class>
+   <extends>QWidget</extends>
+   <header>drawwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
