@@ -51,6 +51,27 @@
            </widget>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>ols times</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="olsSpinBox">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>6</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
            <widget class="QCheckBox" name="olsCheckBox">
             <property name="text">
              <string>Ordinary Least Square </string>
@@ -75,6 +96,13 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="pointsNumberLabel">
+            <property name="text">
+             <string>Number of Points: 0</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="cancelButton">
