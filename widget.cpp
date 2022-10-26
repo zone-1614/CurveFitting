@@ -6,6 +6,7 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    ui->lagrangeCheckBox->setStyleSheet("color: blue;");
     connect(this, SIGNAL(clickLagrangeCheckBox(int)), ui->drawWidget, SLOT(onClickLagrangeCheckBox(int)));
     connect(this, SIGNAL(clickGaussCheckBox(int)), ui->drawWidget, SLOT(onClickGaussCheckBox(int)));
     connect(this, SIGNAL(clickOLSCheckBox(int)), ui->drawWidget, SLOT(onClickOLSCheckBox(int)));

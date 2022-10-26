@@ -8,7 +8,7 @@ DrawWidget::DrawWidget(QWidget *parent) :
     ui(new Ui::DrawWidget)
 {
     ui->setupUi(this);
-    draw_lag = false;
+    draw_lag = true;
     draw_gauss = false;
     draw_ols = false;
     ols_times = 1;
@@ -26,7 +26,7 @@ void DrawWidget::onClickLagrangeCheckBox(int arg1)
     } else {
         draw_lag = true;
     }
-    qDebug() << "draw_lag: " << draw_lag;
+    update();
 }
 
 void DrawWidget::onClickGaussCheckBox(int arg1)
@@ -36,6 +36,7 @@ void DrawWidget::onClickGaussCheckBox(int arg1)
     } else {
         draw_gauss = true;
     }
+    update();
     qDebug() << "draw_gauss: " << draw_gauss;
 }
 
@@ -46,6 +47,7 @@ void DrawWidget::onClickOLSCheckBox(int arg1)
     } else {
         draw_ols = true;
     }
+    update();
     qDebug() << "draw_ols: " << draw_ols;
 }
 
@@ -60,12 +62,12 @@ void DrawWidget::onClickCancelButton()
 void DrawWidget::onChangeOLSTimes(int arg1)
 {
     this->ols_times = arg1;
+    update();
     qDebug() << "ols_times: " << ols_times;
 }
 
 void DrawWidget::paintEvent(QPaintEvent *e)
 {
-//    qDebug() << "paint event";
     QPainter painter(this);
     painter.setWindow(-width() / 2, height() / 2, width(), -height()); // set the coordinate system like cartesian.
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -74,21 +76,23 @@ void DrawWidget::paintEvent(QPaintEvent *e)
 
     if (draw_lag) {
         lagrange_interpolation();
-        painter.drawPoints(lag_points);
+        painter.setPen(QPen(Qt::blue, 3, Qt::SolidLine, Qt::RoundCap));
+        painter.drawPolyline(lag_points);
     }
     if (draw_gauss) {
         gauss_basis();
-        painter.drawPoints(gauss_points);
+        painter.setPen(QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap));
+        painter.drawPolyline(gauss_points);
     }
     if (draw_ols) {
         ordinary_least_square();
-        painter.drawPoints(ols_points);
+        painter.setPen(QPen(Qt::red, 3, Qt::SolidLine, Qt::RoundCap));
+        painter.drawPolyline(ols_points);
     }
 }
 
 void DrawWidget::mousePressEvent(QMouseEvent *e)
 {
-//    qDebug() << "mouse event";
     QPointF p_ = e->position();
     qreal x_off = width() / 2, y_off = height() / 2;
     QPointF clickPoint(p_.x() - x_off, y_off - p_.y());
@@ -100,7 +104,31 @@ void DrawWidget::mousePressEvent(QMouseEvent *e)
 
 void DrawWidget::lagrange_interpolation()
 {
+    if (points.size() == 1) return ;
+    lag_points.clear();
+    // min x and max x
+    qreal min_x = 100000, max_x = -100000;
+    for (auto& p : points) {
+        if (p.x() > max_x) max_x = p.x();
+        if (p.x() < min_x) min_x = p.x();
+    }
 
+    int n = points.size();
+    qreal x = min_x - 1.0;
+    while (x < max_x + 1.0) {
+        qreal y = 0.0;
+        for (int i = 0; i < n; i++) {
+            qreal lix = 1.0;
+            for (int j = 0; j < n; j++) {
+                if (i == j) continue;
+                lix *= (x - points[j].x());
+                lix /= (points[i].x() - points[j].x());
+            }
+            y += lix * points[i].y();
+        }
+        lag_points.push_back(QPointF(x, y));
+        x += 0.2;
+    }
 }
 
 void DrawWidget::ordinary_least_square()
