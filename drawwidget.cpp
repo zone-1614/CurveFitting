@@ -104,8 +104,8 @@ void DrawWidget::mousePressEvent(QMouseEvent *e)
 
 void DrawWidget::lagrange_interpolation()
 {
-    if (points.size() == 1) return ;
     lag_points.clear();
+    if (points.size() == 1) return ;
     // min x and max x
     qreal min_x = 100000, max_x = -100000;
     for (auto& p : points) {
