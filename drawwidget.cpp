@@ -133,7 +133,14 @@ void DrawWidget::lagrange_interpolation()
 
 void DrawWidget::ordinary_least_square()
 {
-
+    ols_points.clear();
+    if (ols_points.size() == 1) return ;
+    // min x and max x
+    qreal min_x = 100000, max_x = -100000;
+    for (auto& p : points) {
+        if (p.x() > max_x) max_x = p.x();
+        if (p.x() < min_x) min_x = p.x();
+    }
 }
 
 void DrawWidget::gauss_basis()
