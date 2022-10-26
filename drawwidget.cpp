@@ -2,6 +2,7 @@
 #include "ui_drawwidget.h"
 #include <QDebug>
 #include <QPainter>
+#include <Eigen/Eigen>
 
 DrawWidget::DrawWidget(QWidget *parent) :
     QWidget(parent),
@@ -140,6 +141,32 @@ void DrawWidget::ordinary_least_square()
     for (auto& p : points) {
         if (p.x() > max_x) max_x = p.x();
         if (p.x() < min_x) min_x = p.x();
+    }
+
+    const int n = points.size();
+    Eigen::MatrixXd X(ols_times, ols_times);
+    Eigen::VectorXd Y(ols_times);
+    for (int i = 0; i < ols_times; i++) {
+        for (int j = 0; j < ols_times; j++) {
+            for (int k = 0; k < n; k++) {
+                X(i, j) += pow(points[k].x(), i + j);
+            }
+        }
+        for (int k = 0; k < n; k++) {
+            Y(i) += points[k].y() * pow(points[k].x(), i);
+        }
+    }
+    Eigen::VectorXd A(ols_times);
+    A = X.inverse() * Y;
+
+    qreal x = min_x - 1.0;
+    while (x < max_x + 1.0) {
+        qreal y = 0.0;
+        for (int i = 0; i < ols_times; i++) {
+            y += pow(x, i) * A(i);
+        }
+        ols_points.push_back(QPointF(x, y));
+        x += 0.2;
     }
 }
 
